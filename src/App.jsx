@@ -1,12 +1,16 @@
-import { Button } from "./components/ui/button";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/home";
+import AppLayout from "./Layouts/app-layout";
 
 function App() {
   return (
-    <>
-      <h1 class="text-3xl font-bold underline">Hello world!</h1>
-
-      <Button variant="outline">Button</Button>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AppLayout/>}>
+          <Route path="/" element={<Home/>}/> 
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
