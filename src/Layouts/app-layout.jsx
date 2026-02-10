@@ -22,7 +22,7 @@ const AppLayout = () => {
       <main>
         <SidebarNav onCreateClick={thread.openDailog}/>
         <Header />
-        <div className="w-full md:max-w-4xl mx-auto bg-red-400">
+        <div className="w-full md:max-w-4xl mx-auto ">
           <Outlet />
         </div>
         <BottomNav onCreateClick={thread.openDailog}/>
