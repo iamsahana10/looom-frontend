@@ -1,23 +1,48 @@
-export const registerUser=async(data)=>{
-    try{
-        const res=await api.post("/auth/register",data);
-        console.log("user.data:",res.data);
-        return res.data;
-    }catch(err){
-        console.error(err);
-    }
-}
-export const loginUser=async(data)=>{
-    try{
-        const res=await api.post("/auth/login",data);
-        localStorage.setItem("token",res.data.token);
-        return res.data;
-    }catch(err){
-        console.error(err);
-    }
-}
-export const logoutUser=()=>{
-    localStorage.removeItem("token");
-    window.location.href="/login";
-}
-export const isAuthenticated=()=>!!localStorage.getItem("token");
+import api from "../api/axios";
+
+/**
+ * Register user
+ */
+export const registerUser = async (data) => {
+  const res = await api.post("/auth/register", data);
+  return res.data;
+};
+
+/**
+ * Login user
+ */
+export const loginUser = async (data) => {
+  const res = await api.post("/auth/login", data);
+
+  const token = res.data?.token;
+
+  if (!token) {
+    throw {
+      status: 500,
+      message: "Authentication failed. Token not provided.",
+    };
+  }
+
+  localStorage.setItem("token", token);
+
+  return res.data;
+};
+
+/**
+ * Logout user
+ */
+export const logoutUser = () => {
+  localStorage.removeItem("token");
+
+  if (window.location.pathname !== "/login") {
+    window.location.href = "/login";
+  }
+};
+
+/**
+ * Check authentication
+ */
+export const isAuthenticated = () => {
+  const token = localStorage.getItem("token");
+  return Boolean(token);
+};

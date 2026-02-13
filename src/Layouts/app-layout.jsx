@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useCreateThread } from "@/hooks/use-create-thread";
+import { useCreateThread } from "@/hooks/use-create-thread.js";
 import ThreadForm from "@/components/thread-form";
 
 const AppLayout = () => {
@@ -20,12 +20,12 @@ const AppLayout = () => {
   return (
     <div className="app">
       <main>
-        <SidebarNav onCreateClick={thread.openDailog}/>
+        <SidebarNav onCreateClick={thread.openDialog}/>
         <Header />
         <div className="w-full md:max-w-4xl mx-auto ">
           <Outlet />
         </div>
-        <BottomNav onCreateClick={thread.openDailog}/>
+        <BottomNav onCreateClick={thread.openDialog}/>
         <Dialog open={thread.open} onOpenChange={thread.setOpen}>
           <DialogContent className="md:max-w-lg p-0 bg-transparent border-none shadow-none gap-0" showCloseButton={false}>
             <DialogHeader className="px-5 py-4 border-b border-black/10 bg-white rounded-t-2xl">

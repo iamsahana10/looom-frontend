@@ -1,16 +1,27 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { loginUser } from "@/services/auth.service.js";
 
 const Login = () => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState();
-  const handleLogin = (e) => {
+  const [errorMessage, setErrorMessage] = useState();
+  const navigate = useNavigate();
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(username);
-    console.log(password);
+    if (!username || !password) return;
+    try {
+      setLoading(true);
+      await loginUser({ username, password });
+      navigate("/");
+    } catch (error) {
+      setErrorMessage(error.message || "Login Failed");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="flex flex-col items-center w-full animate-fade-in">
@@ -34,8 +45,17 @@ const Login = () => {
           required
           className="w-full h-14 p-4 rounded-lg focus-visibal:ring-0 focus:border-black/40 transition-color duration-200"
         />
-        <Button type="submit" disable={loading} className="w-full h-14 p-4 rounded-lg bg-black/80 text-gray-400 hover:bg-black hover:text-white transition-all duration-200 cursor-pointer">
-        {loading?'Logging in.....':'login'}
+        {errorMessage && (
+          <p className="text-red-500 text-sm mt-2 text-center">
+            {errorMessage}
+          </p>
+        )}
+        <Button
+          type="submit"
+          disable={loading}
+          className="w-full h-14 p-4 rounded-lg bg-black/80 text-gray-400 hover:bg-black hover:text-white transition-all duration-200 cursor-pointer"
+        >
+          {loading ? "Logging in....." : "login"}
         </Button>
       </form>
       <div className="mt-4 text-center">
@@ -50,7 +70,13 @@ const Login = () => {
       </div>
       <div className="w-full text-center">
         <Link to="/register" className="w-full block">
-        <Button varient="secondary" type="button" className="w-full h-14 p-4 rounded-lg border border-black/20 bg-white hover:border-black/60 cursor-pointer hover:bg-white text-black" >Create an account</Button>
+          <Button
+            varient="secondary"
+            type="button"
+            className="w-full h-14 p-4 rounded-lg border border-black/20 bg-white hover:border-black/60 cursor-pointer hover:bg-white text-black"
+          >
+            Create an account
+          </Button>
         </Link>
       </div>
     </div>
