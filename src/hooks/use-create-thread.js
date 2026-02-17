@@ -1,32 +1,18 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"
 
-export const useCreateThread = () => {
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // If user lands on /create → open dialog
-  useEffect(() => {
-    if (location.pathname === "/create") {
-      setOpen(true);
-    }
-  }, [location.pathname]);
-
-  const openDialog = () => {
-    setOpen(true);
+export const useCreateThread=()=>{
+  const navigate=useNavigate();
+  const location=useLocation();
+  const open=location.pathname==="/create";
+  const openDialog=()=>{
     navigate("/create");
-  };
-
-  const closeDialog = () => {
-    setOpen(false);
-    navigate("/");
-  };
-
-  return {
+  }
+  const closeDialog=()=>{
+    navigate(-1); //go back to preveous page
+  }
+  return{
     open,
-    setOpen,
     openDialog,
-    closeDialog,
-  };
-};
+    closeDialog
+  }
+}

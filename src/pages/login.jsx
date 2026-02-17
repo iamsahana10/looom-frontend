@@ -53,8 +53,7 @@ const Login = () => {
         <Button
           type="submit"
           disable={loading}
-          className="w-full h-14 p-4 rounded-lg bg-black/80 text-gray-400 hover:bg-black hover:text-white transition-all duration-200 cursor-pointer"
-        >
+          className="w-full h-14 p-4 rounded-lg bg-black/80 text-gray-400 hover:bg-black hover:text-white transition-all duration-200 cursor-pointer">
           {loading ? "Logging in....." : "login"}
         </Button>
       </form>
@@ -73,8 +72,7 @@ const Login = () => {
           <Button
             varient="secondary"
             type="button"
-            className="w-full h-14 p-4 rounded-lg border border-black/20 bg-white hover:border-black/60 cursor-pointer hover:bg-white text-black"
-          >
+            className="w-full h-14 p-4 rounded-lg border border-black/20 bg-white hover:border-black/60 cursor-pointer hover:bg-white text-black">
             Create an account
           </Button>
         </Link>

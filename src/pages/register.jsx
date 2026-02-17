@@ -26,7 +26,7 @@ const Register = () => {
       await registerUser({ username, password });
       navigate("/login");
     } catch (error) {
-      setErrorMessage("error.message" || "RegisterFailed");
+      setErrorMessage(error.message || "RegisterFailed");
     } finally {
       setLoading(false);
     }
@@ -68,9 +68,8 @@ const Register = () => {
         )}
         <Button
           type="submit"
-          disable={loading}
-          className="w-full h-14 p-4 rounded-lg bg-black/80 text-gray-400 hover:bg-black hover:text-white transition-all duration-200 cursor-pointer"
-        >
+          disabled={loading}
+          className="w-full h-14 p-4 rounded-lg bg-black/80 text-gray-400 hover:bg-black hover:text-white transition-all duration-200 cursor-pointer">
           {loading ? "Logging in....." : "login"}
         </Button>
       </form>
