@@ -1,4 +1,4 @@
-import api from "../api/axios.js";
+import api from "../api/axios";
 
 /**
  * Register user
@@ -45,4 +45,24 @@ export const logoutUser = () => {
 export const isAuthenticated = () => {
   const token = localStorage.getItem("token");
   return Boolean(token);
+};
+
+/**
+ * Get token
+ */
+export const getToken = () => localStorage.getItem("token");
+
+/**
+ * Decode JWT payload
+ */
+export const getUser = () => {
+  const token = getToken();
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload; // { user_id, username }
+  } catch {
+    return null;
+  }
 };
