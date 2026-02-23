@@ -10,7 +10,7 @@ const NavMenu = ({ iconSize = 22, onCreateClick }) => {
         return (
           <div
             key={index}
-            className={`${active && "bg-gray-200"} group px-4 py-3.5 rounded-lg hover:bg-gray-200 transition-all duration-150 cursor-pointer`}
+            className={`${active && "bg-gray-200"} group px-4 py-3.5 rounded-lg hover:bg-gray-200 transition-all duration-150 cursor-pointer w-full md:w-fit flex justify-center items-center`}
             onClick={isCreate ? onCreateClick : undefined}
           >
             <NavItem Icon={Icon} active={active} size={iconSize} />
