@@ -23,9 +23,8 @@ export default function ThreadForm() {
     try {
       setLoading(true);
       await createPost({ content });
-      await createPost({ content });
       setContent("");
-      navigate("/");
+      window.location.href = "/";
     } catch (error) {
       setErrorMessage(error.message || "Unable to create post");
     } finally {
@@ -38,7 +37,6 @@ export default function ThreadForm() {
       onSubmit={handleSubmit}
       className="bg-white rounded-b-2xl overflow-hidden w-full max-w-[620px]"
     >
-
       <div className="flex gap-3 px-5 pt-4">
         {/* Left Column: Avatar & Thread Line */}
         <div className="flex flex-col items-center">
@@ -63,11 +61,11 @@ export default function ThreadForm() {
         </div>
       </div>
 
-
       {/* Toolbar / Footer */}
       <div
-        className={`px-5 py-3 flex items-end border-t border-black/10 w-full ${errorMessage ? "justify-between" : "justify-end"
-          }`}
+        className={`px-5 py-3 flex items-end border-t border-black/10 w-full ${
+          errorMessage ? "justify-between" : "justify-end"
+        }`}
       >
         {errorMessage && (
           <p className="text-red-500 text-sm mt-2 text-center">
@@ -80,7 +78,7 @@ export default function ThreadForm() {
           disabled={!content.trim() || loading}
           className="bg-black text-white hover:bg-gray-800 cursor-pointer disabled:opacity-50 rounded-full px-6 font-semibold text-sm transition-all"
         >
-          {loading ? 'Posting...' : 'Post'}
+          {loading ? "Posting..." : "Post"}
         </Button>
       </div>
     </form>

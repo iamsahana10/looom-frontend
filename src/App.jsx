@@ -6,6 +6,8 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import { isAuthenticated } from "./services/auth.service";
 import CreateThreadModal from "./components/create-thread-model";
+import Search from "./pages/search";
+import Thread from "./pages/thread";
 
 const PrivateRoute = ({ children }) =>
   isAuthenticated() ? children : <Navigate to="/login" replace />;
@@ -22,12 +24,28 @@ export default function App() {
       {/* ========= BACKGROUND ROUTES ========= */}
       <Routes location={state?.backgroundLocation || location}>
         <Route element={<AuthLayout />}>
-          <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-          <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
         </Route>
 
         <Route element={<AppLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/post/:id" element={<Thread />} />
         </Route>
       </Routes>
 
