@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { formatTimeAgo } from "@/lib/utils";
 import { toggleLike } from "@/services/social.service";
-import { isAuthenticated } from "@/services/auth.service";
+import { getUser, isAuthenticated } from "@/services/auth.service";
 
 export default function PostCard({ post, isReply = false, viewPost = false }) {
   const [liked, setLiked] = useState(post.liked);
@@ -61,7 +61,7 @@ export default function PostCard({ post, isReply = false, viewPost = false }) {
       </button>
 
       {/* COMMENT */}
-      <Link to={`/post/${post.post_id}`}>
+      <Link to={`/post/${post.post_id}`} className="no-underline">
         <button className="flex items-center gap-1 p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 cursor-pointer">
           <MessageCircle size={18} />
           {post.replies_count > 0 && <span>{post.replies_count}</span>}
@@ -76,7 +76,7 @@ export default function PostCard({ post, isReply = false, viewPost = false }) {
   );
 
   return (
-    <article className="group border-b border-gray-300 last:border-b-0 px-6 py-5">
+    <article className="group border-b border-gray-300 last:border-b-0 px-4 py-2.5 md:px-6 md:py-5">
       {viewPost ? (
         /* viewPost layout: avatar + header on one row, then body & actions indented below */
         <div className="flex-1 min-w-0">
@@ -86,18 +86,21 @@ export default function PostCard({ post, isReply = false, viewPost = false }) {
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-500 flex items-center justify-center text-white font-bold text-sm">
                 {avatarLetter}
               </div>
+              {isReply && (
+                <div className="w-[2px] flex-1 mt-2 rounded-full bg-black/10" />
+              )}
             </div>
 
             {/* Header */}
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center gap-1.5 min-w-0">
                 <Link
-                  to={`/user/${post.username}`}
-                  className="font-semibold text-gray-900 truncate"
+                  to={`/profile/${post.user_id}`}
+                  className="font-semibold text-gray-900"
                 >
                   {post.username}
                 </Link>
-                <span className="text-gray-400 shrink-0">
+                <span className="text-gray-400 shrink-0 text-sm md:text-md">
                   {formatTimeAgo(post.created_at)}
                 </span>
               </div>
@@ -108,7 +111,7 @@ export default function PostCard({ post, isReply = false, viewPost = false }) {
           </div>
 
           <div className="px-2">
-            <p className="block text-gray-700 whitespace-pre-wrap my-2.5">
+            <p className="block text-gray-700 whitespace-pre-wrap break-all my-2.5">
               {post.content}
             </p>
             {actions}
@@ -132,10 +135,13 @@ export default function PostCard({ post, isReply = false, viewPost = false }) {
             {/* Header */}
             <div className="flex items-center justify-between mb-0.5">
               <div className="flex items-center gap-1.5 min-w-0">
-                <span className="font-semibold text-gray-900 truncate">
+                <Link
+                  to={`/profile/${post.user_id}`}
+                  className="font-semibold text-gray-900"
+                >
                   {post.username}
-                </span>
-                <span className="text-gray-400 shrink-0">
+                </Link>
+                <span className="text-gray-400 shrink-0 text-sm md:text-md">
                   {formatTimeAgo(post.created_at)}
                 </span>
               </div>
@@ -145,14 +151,16 @@ export default function PostCard({ post, isReply = false, viewPost = false }) {
             </div>
 
             {/* Body */}
-            <Link
-              to={`/post/${post.post_id}`}
-              className="block text-gray-700 whitespace-pre-wrap mb-2.5"
-            >
-              {post.content}
-            </Link>
+            <div className="mt-2.5">
+              <Link
+                to={`/post/${post.post_id}`}
+                className="block text-gray-700 whitespace-pre-wrap break-all mb-2.5 no-underline"
+              >
+                {post.content}
+              </Link>
 
-            {actions}
+              {actions}
+            </div>
           </div>
         </div>
       )}

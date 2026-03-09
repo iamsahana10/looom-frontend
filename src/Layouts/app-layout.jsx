@@ -14,14 +14,12 @@ const AppLayout = () => {
       <main>
         <SidebarNav onCreateClick={thread.openDialog} />
         <Header />
-        <div className="bg-[#fafafa]">
-          <div className="w-full max-w-180 mx-auto">
+        <div className="bg-white/70 min-h-screen">
+          <div className="w-full max-w-160 mx-auto">
             <Outlet />
           </div>
         </div>
         <BottomNav onCreateClick={thread.openDialog} />
-
-
       </main>
       {/* Floating Action Button (Optional) */}
       <div className="hidden md:inline-flex fixed bottom-8 right-8">
