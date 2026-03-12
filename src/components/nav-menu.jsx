@@ -10,10 +10,11 @@ export default function NavMenu({ iconSize = 22, onCreateClick, user }) {
       {NAV_MENU_ITEMS.map((menuItem, index) => {
         const { Icon, isCreate } = menuItem;
 
-        const url =
-          menuItem.url === "/profile" && user?.username
-            ? `/profile/${user.user_id}`
-            : menuItem.url;
+        let url = menuItem.url;
+
+        if (menuItem.url === "/profile") {
+          url = user?.user_id ? `/profile/${user.user_id}` : "/login";
+        }
 
         const active =
           url === "/" ? pathname === "/" : pathname.startsWith(url);

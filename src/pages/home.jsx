@@ -25,14 +25,17 @@ export default function Home() {
   }, []);
 
   return (
-    // Fixed container to prevent the whole page from scrolling
-    <div className="min-h-screen w-full flex flex-col items-center py-6 px-4">
-      <h1 className="text-[15px] font-medium mb-4 shrink-0">Home</h1>
+    <div className="min-h-screen w-full flex flex-col items-center py-6">
+      <h1 className="hidden md:inline-block text-[15px] font-medium mb-4 shrink-0">
+        Home
+      </h1>
 
-      <div className="w-full max-w-180 bg-white border border-black/10 rounded-4xl shadow-xs sticky z-10">
+      <div className="w-full md:bg-white md:border md:border-black/10 md:rounded-3xl md:shadow-xs">
         {/* Feed content */}
         {loading && (
-          <p className="text-gray-500 text-center text-sm py-10">Loading feed...</p>
+          <p className="text-gray-500 text-center text-sm py-10">
+            Loading feed...
+          </p>
         )}
 
         {!loading && error && (
@@ -43,7 +46,9 @@ export default function Home() {
             <p className="font-semibold text-gray-900 text-[15px] tracking-tight">
               Something went wrong
             </p>
-            <p className="text-sm text-gray-400 leading-relaxed max-w-xs">{error}</p>
+            <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
+              {error}
+            </p>
             <button
               onClick={loadFeed}
               className="mt-2 px-5 py-2 rounded-full bg-gray-950 text-white text-sm font-semibold hover:bg-gray-700 transition-all duration-150"
@@ -70,9 +75,7 @@ export default function Home() {
         {!loading && !error && posts.length > 0 && (
           <div className="animate-[fadeIn_0.3s_ease]">
             {posts.map((post) => (
-              <>
-                <PostCard key={post.post_id} post={post} />
-              </>
+              <PostCard key={post.post_id} post={post} />
             ))}
           </div>
         )}

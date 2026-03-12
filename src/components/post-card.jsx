@@ -2,8 +2,8 @@ import { Heart, MessageCircle, Repeat2, MoreHorizontal } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { formatTimeAgo } from "@/lib/utils";
-import { toggleLike } from "@/services/social.service";
 import { getUser, isAuthenticated } from "@/services/auth.service";
+import { toggleLike } from "@/services/social.service.js";
 
 export default function PostCard({ post, isReply = false, viewPost = false }) {
   const [liked, setLiked] = useState(post.liked);
@@ -104,7 +104,7 @@ export default function PostCard({ post, isReply = false, viewPost = false }) {
                   {formatTimeAgo(post.created_at)}
                 </span>
               </div>
-              <button className="p-2 rounded-full text-gray-600 hover:bg-gray-100">
+              <button className="p-2 rounded-full  text-gray-600 hover:bg-gray-100">
                 <MoreHorizontal size={18} />
               </button>
             </div>
