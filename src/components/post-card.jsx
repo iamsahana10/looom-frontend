@@ -1,14 +1,31 @@
-import { Heart, MessageCircle, Repeat2, MoreHorizontal } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  Repeat2,
+  MoreHorizontal,
+  Link2,
+  Trash2,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { formatTimeAgo } from "@/lib/utils";
 import { getUser, isAuthenticated } from "@/services/auth.service";
 import { toggleLike } from "@/services/social.service.js";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { deletePost } from "@/services/posts.service";
 
-export default function PostCard({ post, isReply = false, viewPost = false }) {
+export default function PostCard({
+  post,
+  isReply = false,
+  viewPost = false,
+  onDelete,
+}) {
   const [liked, setLiked] = useState(post.liked);
   const [likeCount, setLikeCount] = useState(post.likes_count || 0);
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const currentUser = getUser();
+  const isOwner = isAuthenticated() && currentUser?.user_id === post.user_id;
 
   const avatarLetter = post.username?.charAt(0).toUpperCase();
 
@@ -39,6 +56,48 @@ export default function PostCard({ post, isReply = false, viewPost = false }) {
       setLoading(false);
     }
   };
+  const handleDelete = async () => {
+    try {
+      await deletePost(post.post_id);
+      onDelete?.(post.post_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const handleCopyLink = () => {
+    const url = `${window.location.origin}/post/${post.post_id}`;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(fale), 2000);
+  };
+
+  const moreMenu = (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button className="p-2 rounded-full  text-gray-600 hover:bg-gray-100">
+          <MoreHorizontal size={18} />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent align="end" className="w-48 p-1">
+        <button
+          onClick={handleCopyLink}
+          className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors cursor-pointer"
+        >
+          <Link2 size={15} />
+          {copied ? "Copied!" : "Copy Link"}
+        </button>
+        {isOwner && (
+          <button
+            onClick={handleDelete}
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-md transition-colors cursor-pointer"
+          >
+            <Trash2 size={15} />
+            Delete Post
+          </button>
+        )}
+      </PopoverContent>
+    </Popover>
+  );
 
   const actions = (
     <div className="flex items-center gap-3 -ml-2 mt-1">
@@ -104,9 +163,7 @@ export default function PostCard({ post, isReply = false, viewPost = false }) {
                   {formatTimeAgo(post.created_at)}
                 </span>
               </div>
-              <button className="p-2 rounded-full  text-gray-600 hover:bg-gray-100">
-                <MoreHorizontal size={18} />
-              </button>
+              {moreMenu}
             </div>
           </div>
 
@@ -145,9 +202,7 @@ export default function PostCard({ post, isReply = false, viewPost = false }) {
                   {formatTimeAgo(post.created_at)}
                 </span>
               </div>
-              <button className="p-2 rounded-full text-gray-600 hover:bg-gray-100">
-                <MoreHorizontal size={18} />
-              </button>
+              {moreMenu}
             </div>
 
             {/* Body */}

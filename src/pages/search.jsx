@@ -201,7 +201,15 @@ const Search = () => {
                   No posts found.
                 </p>
               ) : (
-                posts.map((post) => <PostCard key={post.post_id} post={post} />)
+                posts.map((post) => (
+                  <PostCard
+                    key={post.post_id}
+                    post={post}
+                    onDelete={(id) =>
+                      setPosts((prev) => prev.filter((p) => p.post_id !== id))
+                    }
+                  />
+                ))
               )}
             </TabsContent>
           </Tabs>

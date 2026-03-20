@@ -42,7 +42,7 @@ export default function ReplyForm({ parentId, onReply }) {
     >
       <div className="flex flex-col items-center">
         <div className="w-9 h-9 rounded-full bg-gray-400 shrink-0 text-white font-bold text-xl flex items-center justify-center overflow-hidden">
-          {user.username.charAt(0).toUpperCase()}
+          {user?.username.charAt(0).toUpperCase()}
         </div>
         <div className="w-[2px] grow bg-black/10 rounded-full" />
       </div>

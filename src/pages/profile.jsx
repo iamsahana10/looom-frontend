@@ -146,7 +146,12 @@ const Profile = () => {
               <div className="animate-[fadeIn_0.3s_ease]">
                 {threads.map((post, index) => (
                   <div key={post.post_id}>
-                    <PostCard post={post} />
+                    <PostCard
+                      post={post}
+                      onDelete={(id) =>
+                        setPosts((prev) => prev.filter((p) => p.post_id !== id))
+                      }
+                    />
                     {index < threads.length - 1 && (
                       <div className="mx-5 boder-b border-black/20" />
                     )}
@@ -166,7 +171,12 @@ const Profile = () => {
               <div className="animate-[fadeIn_0.3s_ease]">
                 {replies.map((post, index) => (
                   <div key={post.post_id}>
-                    <PostCard post={post} />
+                    <PostCard
+                      post={post}
+                      onDelete={(id) =>
+                        setPosts((prev) => prev.filter((p) => p.post_id !== id))
+                      }
+                    />
                     {index < replies.length - 1 && (
                       <div className="mx-5 boder-b border-black/20" />
                     )}
