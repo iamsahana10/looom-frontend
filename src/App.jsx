@@ -9,7 +9,7 @@ import Search from "./pages/search";
 import Thread from "./pages/thread";
 import Profile from "./pages/profile";
 import Activity from "./pages/activity";
-import AppLayout from "./Layouts/app-layout";
+import AppLayout from "./layouts/app-layout.jsx";
 
 const PrivateRoute = ({ children }) =>
   isAuthenticated() ? children : <Navigate to="/login" replace />;
