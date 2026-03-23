@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { createPost } from "@/services/posts.service";
-import { useNavigate } from "react-router-dom";
 import { getUser } from "@/services/auth.service";
 
 export default function ThreadForm() {

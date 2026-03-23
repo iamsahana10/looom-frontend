@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import AuthLayout from "./layouts/auth-layout.jsx";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import Register from "./pages/register";
@@ -10,6 +9,7 @@ import Thread from "./pages/thread";
 import Profile from "./pages/profile";
 import Activity from "./pages/activity";
 import AppLayout from "./layouts/app-layout.jsx";
+import AuthLayout from "./layouts/auth-layout.jsx";
 
 const PrivateRoute = ({ children }) =>
   isAuthenticated() ? children : <Navigate to="/login" replace />;
