@@ -68,7 +68,7 @@ export default function PostCard({
     const url = `${window.location.origin}/post/${post.post_id}`;
     navigator.clipboard.writeText(url);
     setCopied(true);
-    setTimeout(() => setCopied(fale), 2000);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const moreMenu = (

@@ -10,8 +10,6 @@ export default function ThreadForm() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const navigate = useNavigate();
-
   const user = getUser();
 
   const handleSubmit = async (e) => {

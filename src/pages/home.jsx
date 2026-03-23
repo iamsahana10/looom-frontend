@@ -4,13 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const LIMIT = 10;
+
 export default function Home() {
   const location = useLocation();
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
   const sentinelRef = useRef(null);
+
+  // Keep mutable state in refs so the observer callback is never stale
   const offsetRef = useRef(0);
   const hasMoreRef = useRef(true);
   const loadingRef = useRef(false);
@@ -18,32 +20,38 @@ export default function Home() {
   const loadFeed = async (reset = false) => {
     if (loadingRef.current) return;
     if (!reset && !hasMoreRef.current) return;
-    const currentOffset = reset ? 0 : offsetRef.current;
-    loadingRef.current = true;
 
+    const currentOffset = reset ? 0 : offsetRef.current;
+
+    loadingRef.current = true;
     setLoading(true);
     setError("");
+
     try {
       const data = await getFeed({ limit: LIMIT, offset: currentOffset });
+
       setPosts((prev) => (reset ? data : [...prev, ...data]));
       offsetRef.current = currentOffset + data.length;
       hasMoreRef.current = data.length === LIMIT;
     } catch (err) {
-      setError(err.message || "Failed to load feed");
+      setError(err?.message || "Failed to load feed");
     } finally {
       setLoading(false);
       loadingRef.current = false;
     }
   };
 
+  // Initial load
   useEffect(() => {
     loadFeed(true);
   }, []);
 
   useEffect(() => {
     if (!hasMoreRef.current || loadingRef.current) return;
+
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
+
     const rect = sentinel.getBoundingClientRect();
     if (rect.top < window.innerHeight) {
       loadFeed();
@@ -53,27 +61,32 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       if (!hasMoreRef.current || loadingRef.current) return;
+
       const sentinel = sentinelRef.current;
       if (!sentinel) return;
+
       const rect = sentinel.getBoundingClientRect();
       if (rect.top < window.innerHeight + 100) {
-        loadFeed();
+        loadFeed(); // or loadFeed()
       }
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Refresh after new post
   useEffect(() => {
     if (location.state?.refresh) {
-      hasMoreRef.current = 0;
-      offset.current = 0;
+      hasMoreRef.current = true;
+      offsetRef.current = 0;
       loadFeed(true);
     }
   }, [location.state?.refresh]);
+
   const handleRetry = () => {
     hasMoreRef.current = true;
-    offset.current = 0;
+    offsetRef.current = 0;
     loadFeed(true);
   };
 
@@ -127,13 +140,7 @@ export default function Home() {
         {posts.length > 0 && (
           <div className="animate-[fadeIn_0.3s_ease]">
             {posts.map((post) => (
-              <PostCard
-                key={post.post_id}
-                post={post}
-                onDelete={(id) =>
-                  setPosts((prev) => prev.filter((p) => p.post_id !== id))
-                }
-              />
+              <PostCard key={post.post_id} post={post} />
             ))}
           </div>
         )}
