@@ -148,8 +148,8 @@ const Search = () => {
                   {users.map((user, index) => (
                     <li key={user.user_id ?? index}>
                       <Link
-                        to={`/profile/${user.username}`}
-                        className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 transition-colors border-b border-black/10 last:border-b-0"
+                        to={`/profile/${user.user_id}`}
+                        className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 transition-colors border-b border-black/[0.06] last:border-b-0"
                       >
                         {user.avatar_url ? (
                           <img
@@ -167,25 +167,7 @@ const Search = () => {
                             <span className="text-[14px] font-semibold text-gray-900 truncate">
                               {user.username}
                             </span>
-                            {user.verified && (
-                              <svg
-                                className="w-3.5 h-3.5 text-blue-500 shrink-0"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            )}
                           </div>
-                          {user.display_name && (
-                            <span className="text-[13px] text-gray-400 truncate">
-                              {user.display_name}
-                            </span>
-                          )}
                         </div>
                       </Link>
                     </li>
@@ -201,7 +183,15 @@ const Search = () => {
                   No posts found.
                 </p>
               ) : (
-                posts.map((post) => <PostCard key={post.post_id} post={post} />)
+                posts.map((post) => (
+                  <PostCard
+                    key={post.post_id}
+                    post={post}
+                    onDelete={(id) =>
+                      setPosts((prev) => prev.filter((p) => p.post_id !== id))
+                    }
+                  />
+                ))
               )}
             </TabsContent>
           </Tabs>
